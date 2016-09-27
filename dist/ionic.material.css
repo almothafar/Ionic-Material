@@ -500,28 +500,7 @@
 .bar .button.button-large:disabled,
 .bar .button.button-large:disabled,
 .bar .button.button-floating:disabled {
-  background-color: #DFDFDF;
-  box-shadow: none;
-  color: #9F9F9F; }
-
-.button.disabled:hover,
-.button.disabled.button-large:hover,
-.button.button-floating.disabled:hover,
-.button.button-large.disabled:hover,
-.button.button:disabled:hover,
-.button.button-large:disabled:hover,
-.button.button-large:disabled:hover,
-.button.button-floating:disabled:hover,
-.bar .button.disabled:hover,
-.bar .button.disabled.button-large:hover,
-.bar .button.button-floating.disabled:hover,
-.bar .button.button-large.disabled:hover,
-.bar .button.button:disabled:hover,
-.bar .button.button-large:disabled:hover,
-.bar .button.button-large:disabled:hover,
-.bar .button.button-floating:disabled:hover {
-  background-color: #DFDFDF;
-  color: #9F9F9F; }
+  box-shadow: none; }
 
 .button i,
 .button.button-large i,
@@ -1976,7 +1955,7 @@
 /* Ionic Overrides
 ==================================*/
 * {
-  font-family: "RobotoDraft","Roboto","Helvetica Neue", "Segoe UI", sans-serif; }
+  font-family: "Roboto","Helvetica Neue", "Segoe UI", sans-serif; }
 
 .rounded {
   border-radius: 4px; }
@@ -1997,10 +1976,8 @@ a {
 .bar .button {
   min-height: 44px;
   min-width: 44px;
-  max-width: 48px;
   margin-bottom: 0;
-  max-height: 44px;
-  width: 48px; }
+  max-height: 44px; }
 
 .bar .title + .buttons.buttons-right {
   right: 0;
@@ -2046,7 +2023,6 @@ a {
 .button-bar-positive.activated,
 .bar-positive.activated,
 .positive-border.activated {
-  background-color: #3F51B5;
   color: #fff; }
 
 .positive-900-bg,
@@ -2139,7 +2115,6 @@ a {
 .button-bar-calm.activated,
 .bar-calm.activated,
 .calm-border.activated {
-  background-color: #2196F3;
   color: #fff; }
 
 .calm-900-bg,
@@ -2232,7 +2207,6 @@ a {
 .button-bar-royal.activated,
 .bar-royal.activated,
 .royal-border.activated {
-  background-color: #673AB7;
   color: #fff; }
 
 .royal-900-bg,
@@ -2325,7 +2299,6 @@ a {
 .button-bar-balanced.activated,
 .bar-balanced.activated,
 .balanced-border.activated {
-  background-color: #4CAF50;
   color: #fff; }
 
 .balanced-900-bg,
@@ -2418,7 +2391,6 @@ a {
 .button-bar-energized.activated,
 .bar-energized.activated,
 .energized-border.activated {
-  background-color: #FF9800;
   color: #fff; }
 
 .energized-900-bg,
@@ -2449,7 +2421,6 @@ a {
 .button-bar-energized-900.activated,
 .bar-energized-900.activated,
 .energized-900-border.activated {
-  background-color: #E65100;
   color: #fff; }
 
 .energized-100-bg,
@@ -2510,7 +2481,6 @@ a {
 .button-bar-assertive.activated,
 .bar-assertive.activated,
 .assertive-border.activated {
-  background-color: #F44336;
   color: #fff; }
 
 .assertive-900-bg,
@@ -2603,22 +2573,10 @@ a {
 .button-bar-stable.activated,
 .bar-stable.activated,
 .stable-border.activated {
-  background-color: #E0E0E0;
   color: #fff; }
 
 /* Text Colors
 ==================================*/
-.positive,
-.positive *,
-*.positive,
-.positive:hover,
-.positive:hover *,
-*.positive:hover,
-.positive:active,
-.positive:active *,
-*.positive:active {
-  color: #3F51B5; }
-
 .positive-900,
 .positive-900 *,
 *.positive-900,
@@ -2674,17 +2632,6 @@ a {
 *.calm-100:active {
   color: #BBDEFB; }
 
-.royal,
-.royal *,
-*.royal,
-.royal:hover,
-.royal:hover *,
-*.royal:hover,
-.royal:active,
-.royal:active *,
-*.royal:active {
-  color: #673AB7; }
-
 .royal-900,
 .royal-900 *,
 *.royal-900,
@@ -2706,17 +2653,6 @@ a {
 .royal-100:active *,
 *.royal-100:active {
   color: #D1C4E9; }
-
-.balanced,
-.balanced *,
-*.balanced,
-.balanced:hover,
-.balanced:hover *,
-*.balanced:hover,
-.balanced:active,
-.balanced:active *,
-*.balanced:active {
-  color: #4CAF50; }
 
 .balanced-900,
 .balanced-900 *,
@@ -2740,17 +2676,6 @@ a {
 *.balanced-100:active {
   color: #C8E6C9; }
 
-.energized,
-.energized *,
-*.energized,
-.energized:hover,
-.energized:hover *,
-*.energized:hover,
-.energized:active,
-.energized:active *,
-*.energized:active {
-  color: #FF9800; }
-
 .energized-900,
 .energized-900 *,
 *.energized-900,
@@ -2773,17 +2698,6 @@ a {
 *.energized-100:active {
   color: #FFE0B2; }
 
-.assertive,
-.assertive *,
-*.assertive,
-.assertive:hover,
-.assertive:hover *,
-*.assertive:hover,
-.assertive:active,
-.assertive:active *,
-*.assertive:active {
-  color: #F44336; }
-
 .assertive-900,
 .assertive-900 *,
 *.assertive-900,
@@ -2805,39 +2719,6 @@ a {
 .assertive-100:active *,
 *.assertive-100:active {
   color: #FFCDD2; }
-
-.stable,
-.stable *,
-*.stable,
-.stable:hover,
-.stable:hover *,
-*.stable:hover,
-.stable:active,
-.stable:active *,
-*.stable:active {
-  color: #E0E0E0; }
-
-.light,
-.light *,
-*.light,
-.light:hover,
-.light:hover *,
-*.light:hover,
-.light:active,
-.light:active *,
-*.light:active {
-  color: #fff; }
-
-.dark,
-.dark *,
-*.dark,
-.dark:hover,
-.dark:hover *,
-*.dark:hover,
-.dark:active,
-.dark:active *,
-*.dark:active {
-  color: #444; }
 
 .light-border {
   border-color: #ddd; }
