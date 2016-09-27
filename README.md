@@ -7,7 +7,7 @@ Ionic Framework ♥ Material Design
 [![GitHub version](https://badge.fury.io/gh/zachsoft%2Fionic-material.svg)](http://badge.fury.io/gh/zachsoft%2Fionic-material)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
-See our [releases](https://github.com/zachsoft/ionic-material/releases) and other [versions](https://github.com/zachsoft/ionic-material/tags)
+See our [releases](https://github.com/almothafar/ionic-material/releases) and other [versions](https://github.com/almothafar/ionic-material/tags)
 
 ## Demo and Documentation
 ### Codepen
@@ -26,7 +26,7 @@ See our [releases](https://github.com/zachsoft/ionic-material/releases) and othe
 
 ```shell
  cd /PATH/TO/YOUR/PROJECT
- bower install ionic-material
+ bower install https://github.com/almothafar/Ionic-Material.git#^0.4.4
 ```
 
 ### Step 2: Add `Roboto` font (by **Google**)
