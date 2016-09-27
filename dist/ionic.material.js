@@ -120,9 +120,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	 */
 	module.exports = function (angularApp) {
 
-	    angularApp.factory('ionicMaterialInk', ink);
+	    angularApp.factory('ionicMaterialInk', ['$timeout', ink]);
 
-	    function ink (){
+	    function ink ($timeout){
 	        /*global document*/
 	        var Ink = Ink || {};
 
@@ -277,9 +277,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    var scale = 'scale(' + ((el.clientWidth / 100) * 2.5) + ')';
 
 	                    // Support for touch devices
-	                    if ('touches' in e) {
-	                        relativeY = (e.touches[0].pageY - pos.top);
-	                        relativeX = (e.touches[0].pageX - pos.left);
+	                    if ('touches' in e && e.touches.length) {
+	                        var touche = e.touches[0];
+	                        relativeY = (touche.pageY - pos.top);
+	                        relativeX = (touche.pageX - pos.left);
 	                    }
 
 	                    // Attach data to element
@@ -334,7 +335,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                    var el = this;
 
-	                    var width = el.clientWidth * 1.4;
+	                    // var width = el.clientWidth * 1.4;
 
 	                    // Get first ripple
 	                    var ripple = null;
@@ -365,7 +366,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                    }
 
 	                    // Fade out ripple after delay
-	                    setTimeout(function() {
+	                    $timeout(function() {
 
 	                        var style = {
 	                            'top': relativeY + 'px',
@@ -386,7 +387,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                        ripple.setAttribute('style', convertStyle(style));
 
-	                        setTimeout(function() {
+	                        $timeout(function() {
 	                            try {
 	                                el.removeChild(ripple);
 	                            } catch (e) {
@@ -399,7 +400,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	                // Little hack to make <input> can perform ink effect
 	                wrapInput: function(elements) {
 
-	                    for (var a = 0; a < elements.length; a++) {
+	                    for (var a = 0, l = elements.length; a < l; a++) {
 
 	                        var el = elements[a];
 
@@ -408,17 +409,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	                            var parent = el.parentNode;
 
 	                            // If input already have parent just pass through
-	                            if (parent.tagName.toLowerCase() === 'i' &&
-	                                parent.className.indexOf('ink') !== -1 &&
-	                                parent.className.indexOf('tab-item') !== -1 &&
-	                                parent.className.indexOf('button-fab') !== -1 &&
-	                                parent.className.indexOf('button-raised') !== -1 &&
-	                                parent.className.indexOf('button-flat') !== -1 &&
-	                                parent.className.indexOf('button-clear') !== -1 &&
-	                                parent.className.indexOf('button') !== -1 &&
-	                                parent.className.indexOf('item') !== -1) {
-	                                return false;
+	                            if (parent.tagName.toLowerCase() === 'i') {
+	                                var clsName = parent.className;
+	                                if (clsName.indexOf('ink') !== -1
+	                                    && clsName.indexOf('tab-item') !== -1
+	                                    && clsName.indexOf('button-fab') !== -1
+	                                    && clsName.indexOf('button-raised') !== -1
+	                                    && clsName.indexOf('button-flat') !== -1
+	                                    && clsName.indexOf('button-clear') !== -1
+	                                    && clsName.indexOf('button') !== -1
+	                                    && clsName.indexOf('item') !== -1) {
+	                                    return false;
+	                                }
 	                            }
+
 
 	                            // Put element class and style to the specified parent
 	                            var wrapper = document.createElement('i');
@@ -452,9 +456,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                //Wrap input inside <i> tag
 	                var selectors = '.ink,.tab-item,.button-fab,.button-raised,.button-flat,.button-clear,a.item,.popup .button';
-	                Effect.wrapInput($$(selectors));
+	                var elements = $$(selectors);
+	                Effect.wrapInput(elements);
 
-	                Array.prototype.forEach.call($$(selectors), function(i) {
+	                angular.forEach(elements, function(i) {
 	                    if (i.className.indexOf('no-ink') !== -1) return;
 	                    if ('ontouchstart' in window) {
 	                        i.addEventListener('touchstart', Effect.show, false);
@@ -471,7 +476,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            return Ink;
 	    }
 
-	    ink.inject = [];
+	    //ink.inject = [];
 	};
 
 
@@ -479,47 +484,47 @@ return /******/ (function(modules) { // webpackBootstrap
 /* 3 */
 /***/ function(module, exports) {
 
-	module.exports = function(angularApp) {
-	    angularApp.factory('ionicMaterialMotion', Motion);
+	module.exports = function (angularApp) {
+	    angularApp.factory('ionicMaterialMotion', ['$timeout', Motion]);
 
-	    function Motion() {
+	    function Motion($timeout) {
 	        /*global document, window*/
 
 	        'use strict';
 
 	        /*============================================================================*/
 	        /* HELPERS (non-exports)
-	        /=============================================================================*
-	        /   Abstract common lookups and manipulations in case better alternatives
-	        /   arise or future cross-platform differences warrant separate handling
-	        /=============================================================================*/
-	        
+	         /=============================================================================*
+	         /   Abstract common lookups and manipulations in case better alternatives
+	         /   arise or future cross-platform differences warrant separate handling
+	         /=============================================================================*/
+
 	        // function to check if there is already existing class 
 	        // to prevent duplication, i would use classList, 
 	        // but it's not supported in Android 4.x without crosswalk
 	        function hasClass(element, className) {
-	            if(element.classList){
+	            if (element.classList) {
 	                return element.classList.contains(className);
 	            }
-	            else{
-	                var classes = element.className; 
+	            else {
+	                var classes = element.className;
 	                return classes.indexOf(className) !== -1;
 	            }
 	        }
-	        
+
 	        function addClass(element, className) {
-	            if(hasClass(element, className)){
-	                if(element.classList){
+	            if (hasClass(element, className)) {
+	                if (element.classList) {
 	                    element.classList.add(className);
 	                } else {
 	                    element.className += ' ' + className;
 	                }
 	            }
 	        }
-	        
+
 	        function removeClass(element, className) {
-	            if(hasClass(element, className)){
-	                if(element.classList){
+	            if (hasClass(element, className)) {
+	                if (element.classList) {
 	                    element.classList.remove(className);
 	                } else {
 	                    element.className = element.className.replace(className, '');
@@ -527,31 +532,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	                }
 	            }
 	        }
-	        
+
 	        function getViewportHeight() {
 	            return window.innerHeight;
 	        }
 
-	        function getBoundingClientRect(domNode) {
-	            return domNode.getBoundingClientRect;
-	        }
+	        /*        function getBoundingClientRect(domNode) {
+	         return domNode.getBoundingClientRect;
+	         }*/
 
 	        function showNotAnimatedElements(elements, total) {
 	            // Load the elements without effect
 	            for (var i = 0; i < total; i++) {
 	                var child = elements[i];
-	                addClass(child, 'in');
-	                addClass(child, 'done');
+	                child.className += ' in done';
 	            }
 	        }
 
 
-
 	        /*============================================================================*/
 	        /* MOTION (EXPORT)
-	        /=============================================================================*
-	        /   Animation methods for the library
-	        /=============================================================================*/
+	         /=============================================================================*
+	         /   Animation methods for the library
+	         /=============================================================================*/
 
 	        var motion = {
 	            blinds: blinds,
@@ -624,17 +627,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	                var delay = parseFloat(offset / speed).toFixed(2);
 	                child.style.webkitTransitionDelay = delay + "s";
 	                child.style.transitionDelay = delay + "s";
-	                addClass(child, 'in')
+	                addClass(child, 'in');
 	                //child.className += ' in';
 	            }
 
 	            // When we're done animating, switch the class to 'done'
-	            setTimeout(function() {
+	            $timeout(function () {
 	                for (var i = 0; i < elementAnimationCount; i++) {
-	                    var child = animateBlindsDom[i];
-	                    var childOffset = child.getBoundingClientRect();
-	                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-	                    var delay = parseFloat(offset / speed / options.finishDelayThrottle).toFixed(2);
+	                    // var child = animateBlindsDom[i];
+	                    // var childOffset = child.getBoundingClientRect();
+	                    // var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+	                    // var delay = parseFloat(offset / speed / options.finishDelayThrottle).toFixed(2);
 	                    //child.querySelector('img').style.webkitTransitionDelay = delay + "s";
 	                    //child.querySelector('img').style.transitionDelay = delay + "s";
 	                    //child.querySelector('img').className += ' in';
@@ -714,16 +717,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            // When we're done animating, switch the class to 'done'
-	            setTimeout(function() {
+	            $timeout(function () {
 	                for (var i = 0; i < elementAnimationCount; i++) {
-	                    var child = animateFadeSlideInDom[i];
-	                    var childOffset = child.getBoundingClientRect();
-	                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-	                    var delayValue = offset / speed / options.finishDelayThrottle;
-	                    var delay = parseFloat(delayValue).toFixed(2);
+	                    /*                    var child = animateFadeSlideInDom[i];
+	                     var childOffset = child.getBoundingClientRect();
+	                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+	                     var delayValue = offset / speed / options.finishDelayThrottle;
+	                     var delay = parseFloat(delayValue).toFixed(2);*/
 	                }
-	                addClass(animateFadeSlideInDom[0], 'done');
-	                //animateFadeSlideInDom[0].className += ' done';
+	                if (animateFadeSlideInDom.length) {
+	                    addClass(animateFadeSlideInDom[0], 'done');
+	                }
 
 	            }, speed * options.finishSpeedPercent);
 
@@ -797,20 +801,17 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            // When we're done animating, switch the class to 'done'
-	            setTimeout(function() {
+	            $timeout(function () {
 	                for (var i = 0; i < elementAnimationCount; i++) {
-	                    var child = animateSlideInRightDom[i];
-	                    var childOffset = child.getBoundingClientRect();
-	                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-	                    var delayValue = offset / speed / options.finishDelayThrottle;
-	                    var delay = parseFloat(delayValue).toFixed(2);
+	                    /*                    var child = animateSlideInRightDom[i];
+	                     var childOffset = child.getBoundingClientRect();
+	                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+	                     var delayValue = offset / speed / options.finishDelayThrottle;
+	                     var delay = parseFloat(delayValue).toFixed(2);*/
 	                }
 
-	                var animateSlide = animateSlideInRightDom[0];
-
-	                if(animateSlide) {
-	                    addClass(animateSlide, 'done');
-	                    //animateSlide.className += ' done';
+	                if (animateSlideInRightDom.length) {
+	                    addClass(animateSlideInRightDom[0], 'done');
 	                }
 
 	            }, speed * options.finishSpeedPercent);
@@ -886,16 +887,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	            }
 
 	            // When we're done animating, switch the class to 'done'
-	            setTimeout(function() {
+	            $timeout(function () {
 	                for (var i = 0; i < elementAnimationCount; i++) {
-	                    var child = animateRippleDom[i];
-	                    var childOffset = child.getBoundingClientRect();
-	                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-	                    var delayValue = offset / speed / options.finishDelayThrottle;
-	                    var delay = parseFloat(delayValue).toFixed(2);
+	                    /* var child = animateRippleDom[i];
+	                     var childOffset = child.getBoundingClientRect();
+	                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+	                     var delayValue = offset / speed / options.finishDelayThrottle;
+	                     var delay = parseFloat(delayValue).toFixed(2);*/
 	                }
-	                addClass(animateRippleDom[0], 'done');
-	                //animateRippleDom[0].className += ' done';
+	                if (animateRippleDom.length) {
+	                    addClass(animateRippleDom[0], 'done');
+	                }
+
 
 	            }, speed * options.finishSpeedPercent);
 
@@ -985,11 +988,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        /* Export object
-	        /============================================================================*/
+	         /============================================================================*/
 	        return motion;
 	    }
 
-	    Motion.$inject = [];
+	    // Motion.$inject = [];
 	};
 
 

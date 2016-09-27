@@ -1,6 +1,6 @@
 {
   "name": "ionic-material",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "authors": [
     "Zach Fitzgerald"
   ],
@@ -30,6 +30,8 @@
     "tests"
   ],
   "dependencies": {
+  },
+  "devDependencies": {
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.13",
     "gulp-concat": "^2.6.0",
@@ -37,9 +39,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "2.0.0",
-    "lodash": "^4.16.2"
-  },
-  "devDependencies": {
+    "lodash": "^4.16.2",
     "cz-conventional-changelog": "^1.2.0",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",

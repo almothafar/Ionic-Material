@@ -1,44 +1,44 @@
-module.exports = function(angularApp) {
-    angularApp.factory('ionicMaterialMotion', Motion);
+module.exports = function (angularApp) {
+    angularApp.factory('ionicMaterialMotion', ['$timeout', Motion]);
 
-    function Motion() {
+    function Motion($timeout) {
         /*global document, window*/
 
         'use strict';
 
         /*============================================================================*/
         /* HELPERS (non-exports)
-        /=============================================================================*
-        /   Abstract common lookups and manipulations in case better alternatives
-        /   arise or future cross-platform differences warrant separate handling
-        /=============================================================================*/
-        
+         /=============================================================================*
+         /   Abstract common lookups and manipulations in case better alternatives
+         /   arise or future cross-platform differences warrant separate handling
+         /=============================================================================*/
+
         // function to check if there is already existing class 
         // to prevent duplication, i would use classList, 
         // but it's not supported in Android 4.x without crosswalk
         function hasClass(element, className) {
-            if(element.classList){
+            if (element.classList) {
                 return element.classList.contains(className);
             }
-            else{
-                var classes = element.className; 
+            else {
+                var classes = element.className;
                 return classes.indexOf(className) !== -1;
             }
         }
-        
+
         function addClass(element, className) {
-            if(hasClass(element, className)){
-                if(element.classList){
+            if (hasClass(element, className)) {
+                if (element.classList) {
                     element.classList.add(className);
                 } else {
                     element.className += ' ' + className;
                 }
             }
         }
-        
+
         function removeClass(element, className) {
-            if(hasClass(element, className)){
-                if(element.classList){
+            if (hasClass(element, className)) {
+                if (element.classList) {
                     element.classList.remove(className);
                 } else {
                     element.className = element.className.replace(className, '');
@@ -46,31 +46,29 @@ module.exports = function(angularApp) {
                 }
             }
         }
-        
+
         function getViewportHeight() {
             return window.innerHeight;
         }
 
-        function getBoundingClientRect(domNode) {
-            return domNode.getBoundingClientRect;
-        }
+        /*        function getBoundingClientRect(domNode) {
+         return domNode.getBoundingClientRect;
+         }*/
 
         function showNotAnimatedElements(elements, total) {
             // Load the elements without effect
             for (var i = 0; i < total; i++) {
                 var child = elements[i];
-                addClass(child, 'in');
-                addClass(child, 'done');
+                child.className += ' in done';
             }
         }
 
 
-
         /*============================================================================*/
         /* MOTION (EXPORT)
-        /=============================================================================*
-        /   Animation methods for the library
-        /=============================================================================*/
+         /=============================================================================*
+         /   Animation methods for the library
+         /=============================================================================*/
 
         var motion = {
             blinds: blinds,
@@ -143,17 +141,17 @@ module.exports = function(angularApp) {
                 var delay = parseFloat(offset / speed).toFixed(2);
                 child.style.webkitTransitionDelay = delay + "s";
                 child.style.transitionDelay = delay + "s";
-                addClass(child, 'in')
+                addClass(child, 'in');
                 //child.className += ' in';
             }
 
             // When we're done animating, switch the class to 'done'
-            setTimeout(function() {
+            $timeout(function () {
                 for (var i = 0; i < elementAnimationCount; i++) {
-                    var child = animateBlindsDom[i];
-                    var childOffset = child.getBoundingClientRect();
-                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-                    var delay = parseFloat(offset / speed / options.finishDelayThrottle).toFixed(2);
+                    // var child = animateBlindsDom[i];
+                    // var childOffset = child.getBoundingClientRect();
+                    // var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+                    // var delay = parseFloat(offset / speed / options.finishDelayThrottle).toFixed(2);
                     //child.querySelector('img').style.webkitTransitionDelay = delay + "s";
                     //child.querySelector('img').style.transitionDelay = delay + "s";
                     //child.querySelector('img').className += ' in';
@@ -233,16 +231,17 @@ module.exports = function(angularApp) {
             }
 
             // When we're done animating, switch the class to 'done'
-            setTimeout(function() {
+            $timeout(function () {
                 for (var i = 0; i < elementAnimationCount; i++) {
-                    var child = animateFadeSlideInDom[i];
-                    var childOffset = child.getBoundingClientRect();
-                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-                    var delayValue = offset / speed / options.finishDelayThrottle;
-                    var delay = parseFloat(delayValue).toFixed(2);
+                    /*                    var child = animateFadeSlideInDom[i];
+                     var childOffset = child.getBoundingClientRect();
+                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+                     var delayValue = offset / speed / options.finishDelayThrottle;
+                     var delay = parseFloat(delayValue).toFixed(2);*/
                 }
-                addClass(animateFadeSlideInDom[0], 'done');
-                //animateFadeSlideInDom[0].className += ' done';
+                if (animateFadeSlideInDom.length) {
+                    addClass(animateFadeSlideInDom[0], 'done');
+                }
 
             }, speed * options.finishSpeedPercent);
 
@@ -316,20 +315,17 @@ module.exports = function(angularApp) {
             }
 
             // When we're done animating, switch the class to 'done'
-            setTimeout(function() {
+            $timeout(function () {
                 for (var i = 0; i < elementAnimationCount; i++) {
-                    var child = animateSlideInRightDom[i];
-                    var childOffset = child.getBoundingClientRect();
-                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-                    var delayValue = offset / speed / options.finishDelayThrottle;
-                    var delay = parseFloat(delayValue).toFixed(2);
+                    /*                    var child = animateSlideInRightDom[i];
+                     var childOffset = child.getBoundingClientRect();
+                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+                     var delayValue = offset / speed / options.finishDelayThrottle;
+                     var delay = parseFloat(delayValue).toFixed(2);*/
                 }
 
-                var animateSlide = animateSlideInRightDom[0];
-
-                if(animateSlide) {
-                    addClass(animateSlide, 'done');
-                    //animateSlide.className += ' done';
+                if (animateSlideInRightDom.length) {
+                    addClass(animateSlideInRightDom[0], 'done');
                 }
 
             }, speed * options.finishSpeedPercent);
@@ -405,16 +401,18 @@ module.exports = function(angularApp) {
             }
 
             // When we're done animating, switch the class to 'done'
-            setTimeout(function() {
+            $timeout(function () {
                 for (var i = 0; i < elementAnimationCount; i++) {
-                    var child = animateRippleDom[i];
-                    var childOffset = child.getBoundingClientRect();
-                    var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
-                    var delayValue = offset / speed / options.finishDelayThrottle;
-                    var delay = parseFloat(delayValue).toFixed(2);
+                    /* var child = animateRippleDom[i];
+                     var childOffset = child.getBoundingClientRect();
+                     var offset = childOffset.left * options.leftOffsetPercentage + childOffset.top;
+                     var delayValue = offset / speed / options.finishDelayThrottle;
+                     var delay = parseFloat(delayValue).toFixed(2);*/
                 }
-                addClass(animateRippleDom[0], 'done');
-                //animateRippleDom[0].className += ' done';
+                if (animateRippleDom.length) {
+                    addClass(animateRippleDom[0], 'done');
+                }
+
 
             }, speed * options.finishSpeedPercent);
 
@@ -504,9 +502,9 @@ module.exports = function(angularApp) {
         }
 
         /* Export object
-        /============================================================================*/
+         /============================================================================*/
         return motion;
     }
 
-    Motion.$inject = [];
+    // Motion.$inject = [];
 };
